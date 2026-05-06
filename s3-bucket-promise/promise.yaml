@@ -79,7 +79,7 @@ spec:
                         name: github-token
                         key: token
                   - name: RETRY_AFTER
-                    value: "30s"
+                    value: "90s"
               - env:
                   - name: MODULE_SOURCE
                     value: github.com/abangser/promise-ci-cd//tf-modules/s3-bucket?ref=main
