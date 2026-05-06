@@ -5,7 +5,6 @@ metadata:
 spec:
   url: https://github.com/<ORG>/promise-ci-cd
   branch: main
-  path: gitops
   secretRef:
     name: git-credentials
     namespace: kratix-platform-system
