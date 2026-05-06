@@ -69,7 +69,7 @@ spec:
             containers:
               - env:
                   - name: MODULE_SOURCE
-                    value: github.com/abangser/promise-ci-cd//terraform/s3-bucket?ref=main
+                    value: github.com/abangser/promise-ci-cd//tf-modules/s3-bucket?ref=main
                 image: ghcr.io/syntasso/kratix-cli/terraform-generate:v0.6.0
                 name: terraform-generate
 status:

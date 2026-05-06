@@ -3,7 +3,7 @@
 This Promise was generated with:
 
 ```
-kratix init tf-module-promise s3-bucket --module-source github.com/abangser/promise-ci-cd//terraform/s3-bucket?ref=main --group example.kratix.io --kind S3Bucket
+kratix init tf-module-promise s3-bucket --module-source github.com/abangser/promise-ci-cd//tf-modules/s3-bucket?ref=main --group example.kratix.io --kind S3Bucket
 ```
 
 ## Updating API properties
