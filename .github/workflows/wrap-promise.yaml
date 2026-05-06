@@ -1,0 +1,65 @@
+name: Wrap Terraform Modules as Kratix Promises
+
+on:
+  push:
+
+jobs:
+  wrap-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Install Kratix CLI
+        run: .github/scripts/install-kratix.sh
+
+      - name: Install Terraform
+        run: .github/scripts/install-terraform.sh
+
+      - uses: mikefarah/yq@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: Fetch generated-promises for version comparison
+        run: git fetch origin generated-promises || true
+
+      - name: List Terraform modules
+        id: modules
+        run: |
+          MODULES=$(find tf-modules -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
+          echo "Modules to process: ${MODULES}"
+          # Store as newline-delimited for the loop below
+          echo "list<<EOF" >> $GITHUB_OUTPUT
+          echo "${MODULES}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Wrap all modules
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          while IFS= read -r MODULE; do
+            [[ -z "$MODULE" ]] && continue
+            echo "──────────────────────────────────────"
+            echo "Processing module: ${MODULE}"
+            .github/scripts/generate-promise.sh "$MODULE"
+            .github/scripts/inject-sign-off.sh "$MODULE"
+            VERSION=$(.github/scripts/bump-version.sh "$MODULE")
+            .github/scripts/build-push-image.sh "$MODULE" "$VERSION"
+            .github/scripts/register-module.sh "$MODULE"
+            .github/scripts/generate-example.sh "$MODULE"
+          done <<< "${{ steps.modules.outputs.list }}"
+
+      - name: Commit generated Promises
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/commit-output.sh
