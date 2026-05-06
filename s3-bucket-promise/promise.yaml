@@ -68,7 +68,7 @@ spec:
           spec:
             containers:
               - name: github-sign-off
-                image: ghcr.io/syntasso/kratix-marketplace/pipeline-github-sign-off-image:v0.1.0
+                image: ghcr.io/syntasso/kratix-marketplace/pipeline-github-sign-off-image:v0.2.0
                 command: ["create-and-wait-for-approval"]
                 env:
                   - name: GITHUB_REPOSITORY
@@ -78,6 +78,8 @@ spec:
                       secretKeyRef:
                         name: github-token
                         key: token
+                  - name: RETRY_AFTER
+                    value: "30s"
               - env:
                   - name: MODULE_SOURCE
                     value: github.com/abangser/promise-ci-cd//tf-modules/s3-bucket?ref=main
