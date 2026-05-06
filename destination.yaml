@@ -3,9 +3,9 @@ kind: Destination
 metadata:
   name: platform
   labels:
-    environment: terraform
+    environment: tf-resources
 spec:
-  path: terraform
+  path: tf-resources
   stateStoreRef:
     kind: GitStateStore
     name: default
