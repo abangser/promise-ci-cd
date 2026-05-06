@@ -1,0 +1,23 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: promise-ci-cd
+  namespace: flux-system
+spec:
+  interval: 1m
+  # Replace <ORG> with your GitHub username or organisation (see Step 0)
+  url: https://github.com/<ORG>/promise-ci-cd
+  ref:
+    branch: main
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: promise-ci-cd-generated
+  namespace: flux-system
+spec:
+  interval: 1m
+  # Replace <ORG> with your GitHub username or organisation (see Step 0)
+  url: https://github.com/<ORG>/promise-ci-cd
+  ref:
+    branch: generated-promises

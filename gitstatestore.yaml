@@ -1,0 +1,11 @@
+apiVersion: platform.kratix.io/v1alpha1
+kind: GitStateStore
+metadata:
+  name: default
+spec:
+  url: https://github.com/<ORG>/promise-ci-cd
+  branch: main
+  path: gitops
+  secretRef:
+    name: git-credentials
+    namespace: kratix-platform-system
