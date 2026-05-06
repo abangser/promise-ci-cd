@@ -24,3 +24,10 @@ kratix init tf-module-promise "${MODULE}" \
   --group example.kratix.io \
   --kind "${KIND}" \
   --dir "${PROMISE_DIR}" >&2
+
+# Embed a hash of all Terraform files so bump-version.sh detects changes to
+# implementation files (e.g. main.tf) that don't alter the variables-derived
+# promise structure but do produce a different dependencies image.
+TF_HASH=$(find "tf-modules/${MODULE}" -type f | sort | xargs sha256sum | sha256sum | cut -c1-12)
+yq -i ".metadata.annotations.\"promise.kratix.io/tf-hash\" = \"${TF_HASH}\"" "${PROMISE}"
+echo "Terraform module hash: ${TF_HASH}" >&2
