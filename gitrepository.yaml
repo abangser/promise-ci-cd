@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  # Replace <ORG> with your GitHub username or organisation (see Step 0)
+  # <org> placeholder replaced automatically by Step 0
   url: https://github.com/<ORG>/promise-ci-cd
   ref:
     branch: main
@@ -17,7 +17,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  # Replace <ORG> with your GitHub username or organisation (see Step 0)
+  # <org> placeholder replaced automatically by Step 0
   url: https://github.com/<ORG>/promise-ci-cd
   ref:
     branch: generated-promises
