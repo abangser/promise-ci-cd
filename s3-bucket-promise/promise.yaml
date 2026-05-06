@@ -6,6 +6,7 @@ metadata:
     kratix.io/promise-version: v0.0.1
   name: s3-bucket
   annotations:
+    promise.kratix.io/tf-hash: baa61500b350
     promise.kratix.io/version: 0.1.0
 spec:
   api:
