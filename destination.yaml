@@ -3,7 +3,7 @@ kind: Destination
 metadata:
   name: platform
   labels:
-    environment: tf-resources
+    environment: terraform
 spec:
   path: tf-resources
   stateStoreRef:
