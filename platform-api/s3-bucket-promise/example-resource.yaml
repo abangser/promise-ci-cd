@@ -1,0 +1,9 @@
+apiVersion: example.kratix.io/v1alpha1
+kind: S3Bucket
+metadata:
+  name: example-s3-bucket
+  namespace: default
+spec:
+  bucket_name: example-s3-bucket
+  environment: dev
+  versioning_enabled: false
