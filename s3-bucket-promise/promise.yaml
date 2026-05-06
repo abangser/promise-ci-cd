@@ -57,7 +57,7 @@ spec:
             name: dependencies
           spec:
             containers:
-              - image: ghcr.io/abangser/promise-ci-cd/s3-bucket-dependencies:0.1.0
+              - image: ghcr.io/abangser/promise-ci-cd-s3-bucket-dependencies:0.1.0
                 name: add-tf-dependencies
     resource:
       configure:
