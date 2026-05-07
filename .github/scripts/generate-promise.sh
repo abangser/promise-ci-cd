@@ -31,3 +31,22 @@ kratix init tf-module-promise "${MODULE}" \
 TF_HASH=$(find "tf-modules/${MODULE}" -type f | sort | xargs sha256sum | sha256sum | cut -c1-12)
 yq -i ".metadata.annotations.\"promise.kratix.io/tf-hash\" = \"${TF_HASH}\"" "${PROMISE}"
 echo "Terraform module hash: ${TF_HASH}" >&2
+
+# kratix init always writes a generic marketplace image as the dependencies
+# container. build-push-image.sh later replaces it with the versioned built
+# image, but bump-version.sh runs *before* that step. Pre-seeding the image
+# to match what is currently on generated-promises means the comparison sees
+# final-vs-final rather than default-vs-built, eliminating a spurious diff
+# that would otherwise bump the version on every single run.
+BRANCH_PROMISE="${PROMISE#platform-api/}"
+if git show "origin/generated-promises:${BRANCH_PROMISE}" &>/dev/null; then
+  PREV_VERSION=$(git show "origin/generated-promises:${BRANCH_PROMISE}" \
+    | yq ".metadata.annotations.\"${ANNOTATION}\" // \"\"")
+  if [[ -n "${PREV_VERSION}" ]]; then
+    OWNER="${GITHUB_REPOSITORY_OWNER:-${GITHUB_REPOSITORY%%/*}}"
+    REPO_NAME="${GITHUB_REPOSITORY#*/}"
+    PREV_IMAGE="ghcr.io/${OWNER}/${REPO_NAME}-${MODULE}-dependencies:${PREV_VERSION}"
+    yq -i ".spec.workflows.promise.configure[0].spec.containers[0].image = \"${PREV_IMAGE}\"" "${PROMISE}"
+    echo "Pre-seeded dependencies image: ${PREV_IMAGE}" >&2
+  fi
+fi
